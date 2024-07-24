@@ -59,7 +59,7 @@ app.get("/users", jsonParser, function (req, res, next) {
     const id = req.params.id;
 
     connection.execute(
-      "SELECT * FROM users WHERE id",
+      "SELECT * FROM users WHERE id = ?",
       [id],
       function (err, results, fields) {
         if (err) {
