@@ -22,10 +22,10 @@ app.get("/", (req, res) =>
 );
 
 app.post("/add-user", jsonParser, function (req, res, next) {
-    const {fname, lname, username} = req.body;
+    const {fname, lname, username, password} = req.body;
     connection.execute(
-        'INSERT INTO users (fname, lname, username) VALUES (?, ?, ?) ',
-        [fname, lname, username],
+        'INSERT INTO users (fname, lname, username, password) VALUES (?, ?, ?, ?) ',
+        [fname, lname, username, password],
         function (err, results, fields) {
             if (err ) {
                 res.json({ status: "error", message: "data not saved" });
