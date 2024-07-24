@@ -55,6 +55,26 @@ app.get("/users", jsonParser, function (req, res, next) {
     );
   });
 
+  app.get("/users/:id", jsonParser, function (req, res, next) {
+    const id = req.params.id;
+
+    connection.execute(
+      "SELECT * FROM users WHERE id",
+      [id],
+      function (err, results, fields) {
+        if (err) {
+          res.json({ status: "error", message: err });
+        } else {
+          if (results.length > 0) {
+            res.json({ status: "ok", results: results[0] });
+          } else {
+            res.json({ status: "error", message: "data not found" });
+          }
+        }
+      }
+    );
+  });
+
 app.get("/step", (req, res) =>
   res.json({status: "ok", message: " Express on Vercel page 2"})
 );
