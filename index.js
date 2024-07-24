@@ -17,13 +17,26 @@ const connection = mysql.createPool({
   queueLimit: 0
 });
 
-app.get("/", (req, res) => res.send("hello welcome Express on Vercel"));
+app.get("/", (req, res) => 
+    res.json({status: "ok", message: " hello world"})
+);
 
-// app.get("/users", jsonParser, (req, res) => {
-//   connection.execute("SELECT * FROM users", function (err, results, fields) {
-//     res.json({"data": [results]})
-//   });
-// });
+app.post("/add-user", jsonParser, function (req, res, next) {
+    const {fname, lname, username} = req.body;
+    connection.execute(
+        'INSERT INTO users (fname, lname, username) VALUES (?, ?, ?) ',
+        [fname, lname, username],
+        function (err, results, fields) {
+            if (err ) {
+                res.json({ status: "error", message: "data not saved" });
+            }
+            else {
+                res.json({ status: "ok", results: "data saved" });
+
+            }
+        }
+    )
+})
 
 app.get("/users", jsonParser, function (req, res, next) {
     connection.execute(
@@ -43,11 +56,11 @@ app.get("/users", jsonParser, function (req, res, next) {
   });
 
 app.get("/step", (req, res) =>
-  res.json("hello welcome Express on Vercel page 2")
+  res.json({status: "ok", message: " Express on Vercel page 2"})
 );
 
 app.get("/step/inside", (req, res) =>
-  res.json("hello welcome Express on Vercel inside page 1")
+    res.json({status: "ok", message: " Express on Vercel inside page 2"})
 );
 
 // app.listen(port, () => console.log(`Server ready on port ${port}`));
