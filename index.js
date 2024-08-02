@@ -148,22 +148,32 @@ app.get("/users", jsonParser, function (req, res, next) {
 
 
 
+  // app.post('/authen', jsonParser, function (req, res, next) {
+  //   const authen = req.headers.authorization;
+  //   const token = authen.split(' ')[1];
+  
+  //   var decoded = jwt.verify(token, secret)
+  //   res.json({status: "ok" ,  decoded})
+  
+  // });
+
+
+
   app.post('/authen', jsonParser, function (req, res, next) {
     const authen = req.headers.authorization;
+    if (!authen) {
+        return res.status(401).json({status: "error", message: "No authorization header"});
+    }
+
     const token = authen.split(' ')[1];
-  
-    var decoded = jwt.verify(token, secret)
-    res.json({status: "ok" ,  decoded})
-  
-  });
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({status: "error", message: "Invalid token"});
+        }
+        res.json({status: "ok", decoded});
+    });
+});
 
-// app.get("/step", (req, res) =>
-//   res.json({status: "ok", message: " Express on Vercel page 2"})
-// );
-
-// app.get("/step/inside", (req, res) =>
-//     res.json({status: "ok", message: " Express on Vercel inside page 2"})
-// );
 
 app.listen(port, () => console.log(`Server ready on port ${port}`));
 
