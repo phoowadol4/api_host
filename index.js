@@ -5,12 +5,12 @@ const BodyParser = require("body-parser");
 const jsonParser = BodyParser.json();
 
 var jwt = require("jsonwebtoken");
-var secret = "api_create";
+var secret = "api_host";
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-const port = 3000;
+const port = 3306;
 const mysql = require("mysql2");
 app.use(cors());
 
