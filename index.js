@@ -38,7 +38,7 @@ app.post("/add-user", jsonParser, function (req, res, next) {
                 res.json({ status: "error", message: "data not saved" });
             }
             else {
-                res.json({ status: "ok", results: "data saved" });
+                res.json({ status: "ok", message: "data saved" });
 
             }
         }
@@ -112,7 +112,7 @@ app.get("/users", jsonParser, function (req, res, next) {
           if (err) {
             res.json({ status: "error", message: "register failed" });
           } else {
-            res.json({ status: "ok", results: "register sucessed" });
+            res.json({ status: "ok", message: "register sucessed" });
           }
         }
       );
