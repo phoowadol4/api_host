@@ -10,7 +10,7 @@ var secret = "api_host";
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-const port = 3306;
+// const port = 3306;
 const mysql = require("mysql2");
 app.use(cors());
 
@@ -160,6 +160,6 @@ app.get("/users", jsonParser, function (req, res, next) {
 
   
 
-app.listen(port, () => console.log(`Server ready on port ${port}`));
+// app.listen(port, () => console.log(`Server ready on port ${port}`));
 
 module.exports = app;
