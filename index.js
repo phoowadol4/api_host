@@ -128,7 +128,7 @@ app.get("/users", jsonParser, function (req, res, next) {
             return res.json({ status: "error", message: "การลงทะเบียนล้มเหลว" });
         }
         connection.execute(
-            'INSERT INTO users (fname, lname, email username, password) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO users (fname, lname, email, username, password) VALUES (?, ?, ?, ?, ?)',
             [fname, lname, email, username, hash],
             function (err, results, fields) {
                 if (err) {
