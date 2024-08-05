@@ -24,9 +24,9 @@ const connection = mysql.createPool({
   queueLimit: 0
 });
 
-// app.get("/", (req, res) => 
-//     res.json({status: "ok", message: " hello world"})
-// );
+app.get("/", (req, res) => 
+    res.json({status: "ok", message: " hello world"})
+);
 
 app.post("/add-user", jsonParser, function (req, res, next) {
     const {fname, lname, username, password} = req.body;
@@ -43,7 +43,7 @@ app.post("/add-user", jsonParser, function (req, res, next) {
             }
         }
     )
-})
+});
 
 app.get("/users", jsonParser, function (req, res, next) {
     connection.execute(
@@ -102,23 +102,47 @@ app.get("/users", jsonParser, function (req, res, next) {
     );
   });
 
+  // app.post("/register", jsonParser, function (req, res, next) {
+  //   const { fname, lname, username, password } = req.body;
+  //   bcrypt.hash(password, saltRounds, function (err, hash) {
+  //     connection.execute(
+  //       "INSERT INTO users (fname, lname, username, password) VALUES (?, ?, ?, ?) ",
+  //       [fname, lname, username, hash],
+  //       function (err, results, fields) {
+  //         if (err) {
+  //           res.json({ status: "error", message: "register failed" });
+  //         } else {
+  //           res.json({ status: "ok", message: "register sucessed" });
+  //         }
+  //       }
+  //     );
+  //   });
+  // });
+  
+
   app.post("/register", jsonParser, function (req, res, next) {
     const { fname, lname, username, password } = req.body;
     bcrypt.hash(password, saltRounds, function (err, hash) {
-      connection.execute(
-        "INSERT INTO users (fname, lname, username, password) VALUES (?, ?, ?, ?) ",
-        [fname, lname, username, hash],
-        function (err, results, fields) {
-          if (err) {
-            res.json({ status: "error", message: "register failed" });
-          } else {
-            res.json({ status: "ok", message: "register sucessed" });
-          }
+        if (err) {
+            console.error("ข้อผิดพลาดในการแฮช:", err);
+            return res.json({ status: "error", message: "การลงทะเบียนล้มเหลว" });
         }
-      );
+        connection.execute(
+            "INSERT INTO users (fname, lname, username, password) VALUES (?, ?, ?, ?)",
+            [fname, lname, username, hash],
+            function (err, results, fields) {
+                if (err) {
+                    console.error("ข้อผิดพลาดของฐานข้อมูล:", err);
+                    return res.json({ status: "error", message: "การลงทะเบียนล้มเหลว" });
+                } else {
+                    res.json({ status: "ok", message: "การลงทะเบียนสำเร็จ" });
+                }
+            }
+        );
     });
-  });
-  
+});
+
+
   app.post("/login", jsonParser, function (req, res, next) {
     const { username, password } = req.body;
   
