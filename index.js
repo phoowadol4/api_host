@@ -121,15 +121,15 @@ app.get("/users", jsonParser, function (req, res, next) {
   
 
   app.post("/register", jsonParser, function (req, res, next) {
-    const { fname, lname, username, password } = req.body;
+    const { fname, lname, email, username, password } = req.body;
     bcrypt.hash(password, saltRounds, function (err, hash) {
         if (err) {
             console.error("ข้อผิดพลาดในการแฮช:", err);
             return res.json({ status: "error", message: "การลงทะเบียนล้มเหลว" });
         }
         connection.execute(
-            "INSERT INTO users (fname, lname, username, password) VALUES (?, ?, ?, ?)",
-            [fname, lname, username, hash],
+            'INSERT INTO users (fname, lname, email username, password) VALUES (?, ?, ?, ?, ?)',
+            [fname, lname, email, username, hash],
             function (err, results, fields) {
                 if (err) {
                     console.error("ข้อผิดพลาดของฐานข้อมูล:", err);
